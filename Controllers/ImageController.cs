@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using uploads_api.Context;
 using uploads_api.DTOs;
 
@@ -22,10 +23,28 @@ namespace uploads_api.Controllers
 
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<ImageDTO>> GetImage(Guid id)
-        // {
-        //     var image = await.context.Images.
-        // }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ImageDTO>> GetImageById(Guid id)
+        {
+            var image = await _context.ImageModel
+                .Where(i => i.Id == id)
+                .Select(i => new ImageDTO
+                {
+                    Id = i.Id.ToString(),
+                    URL = i.Url,
+                    ImageData = i.ImageData,
+                    AltText = i.AltText,
+                    UploadedAt = i.UploadedAt.ToString("o")
+                })
+                .FirstOrDefaultAsync();
+
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(image);
+   
+        }
     }
 }
