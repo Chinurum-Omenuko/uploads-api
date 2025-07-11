@@ -11,6 +11,8 @@ namespace uploads_api.DTOs
         public string URL { get; set; }
         public byte[] ImageData { get; set; }
         public string AltText { get; set; }
+        public string Title { get; set; }      
+        public string ContentType { get; set; }      
         public string UploadedAt { get; set; }
     }
 }
